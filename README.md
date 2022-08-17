@@ -97,3 +97,13 @@ curl --location --request PUT 'http://127.0.0.1:8080/api/v1/company/11/22' \
 ```
  docker run -v $(pwd)/migration:/migrations migrate/migrate create -ext sql -dir=/migrations -seq create_companies_tbl
 ```
+
+### To run tests please execute this command in the project root directory
+
+```
+go test -v ./...
+```
+
+### TODO
+1. Add a JWT authentication feature.
+2. Add swagger documentation
