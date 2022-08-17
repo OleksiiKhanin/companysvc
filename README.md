@@ -125,4 +125,7 @@ go test -v ./...
 
 ### TODO
 1. Add a JWT authentication feature.
-2. Add swagger documentation
+2. Add linter
+3. Add swagger documentation
+4. Refactoring tests
+
