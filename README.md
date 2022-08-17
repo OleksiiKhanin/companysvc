@@ -25,7 +25,8 @@ queue_svc      docker-entrypoint.sh nats- ...   Up      0.0.0.0:4222->4222/tcp,:
 
 ```
 
-3. **Create new company. Please create several companies**
+3. **Create new company.**
+Please create several companies to testing purpose
 
 ```
 curl --location --request POST 'http://127.0.0.1:8080/api/v1/company' \
@@ -85,7 +86,8 @@ curl --location --request GET 'http://127.0.0.1:8080/api/v1/company/company_name
 curl --location --request GET 'http://127.0.0.1:8080/api/v1/company/11/22'
 ```
 
-5. **We can filter some companies**
+5. **We can get some companies with custom filters**.
+It is support search company by _name_, _code_, _website_, _country_, _phone_ and _limit_ result output.
 
 ```
 curl --location --request GET 'http://127.0.0.1:8080/api/v1/companies?limit=3&name=1&code=3'
