@@ -8,6 +8,23 @@
 docker-compose up --build -d app pgweb
 ```
 
+To check that all services are running you can use this command:
+```
+docker-compose ps
+```
+
+You should see something like this
+
+```
+    Name                  Command               State                              Ports
+--------------------------------------------------------------------------------------------------------------------
+company_svc    /bin/sh -c "companysvc"          Up      0.0.0.0:8080->8080/tcp,:::8080->8080/tcp
+pgweb_svc      /usr/bin/pgweb --bind=0.0. ...   Up      0.0.0.0:6080->8081/tcp,:::6080->8081/tcp
+postgres_svc   docker-entrypoint.sh postgres    Up      0.0.0.0:5432->5432/tcp,:::5432->5432/tcp
+queue_svc      docker-entrypoint.sh nats- ...   Up      0.0.0.0:4222->4222/tcp,:::4222->4222/tcp, 6222/tcp, 8222/tcp
+
+```
+
 3. **Create new company. Please create several companies**
 
 ```
