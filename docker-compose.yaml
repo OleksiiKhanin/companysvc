@@ -1,0 +1,82 @@
+version: '3.5'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: company_svc
+    ports:
+      - "8080:8080"
+    networks:
+      - app
+    depends_on:
+      - postgres
+      - nats
+    restart: always
+
+  postgres:
+    container_name: postgres_svc
+    image: postgres
+    environment:
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "postgres"
+      POSTGRES_DB: "companies"
+      PGDATA: /data/postgres
+    volumes:
+      - postgres:/data/postgres
+    ports:
+      - "5432:5432"
+    networks:
+      - app
+    restart: always
+
+#  init_db:
+#    container_name: migrate
+#    image: migrate/migrate
+#    environment:
+#      PG_CONNECT: "postgres://postgres:postgres@postgres:5432/companies?sslmode=disable&search_path=public"
+#    restart: "no"
+#    volumes:
+#      - "./migrations/:/migrations/"
+#    depends_on:
+#      - postgres
+#    networks:
+#      - app
+#    entrypoint:
+#      - "migrate"
+#      - "-path"
+#      - "/migrations/"
+#      - "-database"
+#      - "$${PG_CONNECT}"
+#      - "up"
+
+  nats:
+    container_name: queue_svc
+    image: nats:2.8-alpine3.15
+    restart: always
+    networks:
+      - app
+    ports:
+      - 4222:4222
+
+  pgweb:
+    container_name: pgweb_svc
+    image: sosedoff/pgweb
+    environment:
+      DATABASE_URL: "postgres://postgres:postgres@postgres:5432/companies?sslmode=disable"
+    ports:
+      - "6080:8081"
+    networks:
+      - app
+    depends_on:
+      - postgres
+    restart: unless-stopped
+
+networks:
+  app:
+    driver: bridge
+
+volumes:
+  postgres:
+  pgadmin:

@@ -1,0 +1,22 @@
+server:
+  url: ":8080"
+  prefixAPI: "/api"
+loc:
+  url: "https://ipapi.co"
+  retryAttempt: 3
+  allowedCountiesCodes: [CY, UA] #Undefined for test purpose
+db:
+  url: "postgres"
+  port: 5432
+  login: "postgres"
+  password: "postgres"
+  nameDB: "companies"
+  maxConns: 100
+  migrations: "/etc/migrations/"
+event:
+  url: "nats://nats"
+  port: 4222
+  eventChannel: "companies"
+  reconnectWait: 10s
+  pingInterval: 10s
+logLevel: "TRACE"
