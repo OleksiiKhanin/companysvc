@@ -7,7 +7,12 @@ services:
       dockerfile: Dockerfile
     container_name: company_svc
     ports:
-      - "8080:8080"
+      - "8080:80"
+    environment:
+      APP_SERVER_URL: ":80"
+      CONFIG: "/etc/companysvc/conf"
+    volumes:
+      - "./config.yaml:/etc/companysvc/conf.yaml:ro"
     networks:
       - app
     depends_on:
@@ -30,26 +35,6 @@ services:
     networks:
       - app
     restart: always
-
-#  init_db:
-#    container_name: migrate
-#    image: migrate/migrate
-#    environment:
-#      PG_CONNECT: "postgres://postgres:postgres@postgres:5432/companies?sslmode=disable&search_path=public"
-#    restart: "no"
-#    volumes:
-#      - "./migrations/:/migrations/"
-#    depends_on:
-#      - postgres
-#    networks:
-#      - app
-#    entrypoint:
-#      - "migrate"
-#      - "-path"
-#      - "/migrations/"
-#      - "-database"
-#      - "$${PG_CONNECT}"
-#      - "up"
 
   nats:
     container_name: queue_svc
