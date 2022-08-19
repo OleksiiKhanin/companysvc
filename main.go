@@ -1,11 +1,13 @@
 package main
 
 import (
+	"context"
 	"database/sql"
 	"fmt"
 	"net/http"
 	"os"
 	"strings"
+	"time"
 
 	"github.com/OleksiiKhanin/companysvc/api"
 	"github.com/OleksiiKhanin/companysvc/config"
@@ -83,8 +85,18 @@ func startServer(c *config.ServerConfig, iCompany domain.ICompany) {
 		iCompany,
 		log.StandardLogger(),
 	)
+	server := http.Server{
+		Handler: r,
+		Addr:    c.URL,
+	}
 	log.StandardLogger().Infof("Start listening at %s", c.URL)
-	log.Fatal(http.ListenAndServe(c.URL, r))
+	err := server.ListenAndServe()
+	if err != nil {
+		log.Error(err.Error())
+	}
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+	log.Fatalln(server.Shutdown(ctx))
 }
 
 func main() {
