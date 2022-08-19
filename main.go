@@ -91,7 +91,6 @@ func main() {
 	c, err := initConfig()
 	if err != nil {
 		log.Fatalln(err.Error())
-		os.Exit(1)
 	}
 
 	// Set log level if config.logLevel correct, otherwise use default logLevel (INFO)
@@ -102,14 +101,12 @@ func main() {
 	storage, err := initDB(&c.Db)
 	if err != nil {
 		log.Fatalln(err.Error())
-		os.Exit(1)
 	}
 	defer storage.Close()
 
 	if c.Db.Migrations != "" {
 		if err := db.MigrateSchema(storage, c.Db.Migrations); err != nil {
 			log.Fatalln(err.Error())
-			os.Exit(1)
 		}
 	}
 
